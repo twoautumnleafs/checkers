@@ -1,0 +1,5 @@
+/home/tron/c#/obj/Debug/net6.0/c#.csproj.AssemblyReference.cache
+/home/tron/c#/obj/Debug/net6.0/c#.GeneratedMSBuildEditorConfig.editorconfig
+/home/tron/c#/obj/Debug/net6.0/c#.AssemblyInfoInputs.cache
+/home/tron/c#/obj/Debug/net6.0/c#.AssemblyInfo.cs
+/home/tron/c#/obj/Debug/net6.0/c#.csproj.CoreCompileInputs.cache

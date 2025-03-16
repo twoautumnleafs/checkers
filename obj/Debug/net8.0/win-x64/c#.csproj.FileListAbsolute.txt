@@ -1,0 +1,15 @@
+/home/tron/c#/bin/Debug/net8.0/win-x64/c#.exe
+/home/tron/c#/bin/Debug/net8.0/win-x64/c#.deps.json
+/home/tron/c#/bin/Debug/net8.0/win-x64/c#.runtimeconfig.json
+/home/tron/c#/bin/Debug/net8.0/win-x64/c#.dll
+/home/tron/c#/bin/Debug/net8.0/win-x64/c#.pdb
+/home/tron/c#/obj/Debug/net8.0/win-x64/c#.GeneratedMSBuildEditorConfig.editorconfig
+/home/tron/c#/obj/Debug/net8.0/win-x64/c#.AssemblyInfoInputs.cache
+/home/tron/c#/obj/Debug/net8.0/win-x64/c#.AssemblyInfo.cs
+/home/tron/c#/obj/Debug/net8.0/win-x64/c#.csproj.CoreCompileInputs.cache
+/home/tron/c#/obj/Debug/net8.0/win-x64/c#.dll
+/home/tron/c#/obj/Debug/net8.0/win-x64/refint/c#.dll
+/home/tron/c#/obj/Debug/net8.0/win-x64/c#.pdb
+/home/tron/c#/obj/Debug/net8.0/win-x64/c#.genruntimeconfig.cache
+/home/tron/c#/obj/Debug/net8.0/win-x64/ref/c#.dll
+/home/tron/c#/obj/Debug/net8.0/win-x64/c#.csproj.AssemblyReference.cache
