@@ -7,6 +7,13 @@ namespace Gamestudio.Models
         public int Id { get; set; }
         public string PlayerName { get; set; }
         public int ScoreValue { get; set; }
-        public DateTime Date { get; set; }  // Дата записи счета
+        public DateTime Date { get; set; }
+        public void EnsureUtc()
+        {
+            if (Date.Kind != DateTimeKind.Utc)
+            {
+                Date = Date.ToUniversalTime();
+            }
+        }
     }
 }

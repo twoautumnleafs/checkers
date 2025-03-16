@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
 using Gamestudio.Services;
-using Gamestudio.UI;  // Путь к классу ConsoleUI
-using Gamestudio.Models; // Путь к моделям (Score, Comment, Rating)
-
+using Gamestudio.UI;
+using Gamestudio.Models;
+using Microsoft.Extensions.DependencyInjection;  // Для DI
+using Gamestudio;
 namespace CheckersGame
 {
     class Program
@@ -12,13 +13,17 @@ namespace CheckersGame
             // Строка подключения к базе данных PostgreSQL
             string connectionString = "Host=localhost;Username=postgres;Password=xbox;Database=gamestudio";  // Убедитесь, что это ваша реальная строка подключения
 
-            // Создание экземпляров сервисов
-            var scoreService = new ScoreServiceJDBC(connectionString);  // Реализуйте сервисы в соответствии с JDBC-стилем
-            var commentService = new CommentServiceJDBC(connectionString);
-            var ratingService = new RatingServiceJDBC(connectionString);
+            // Создание контейнера для зависимостей
+            var serviceProvider = new ServiceCollection()
+                .AddDbContext<CheckersGameContext>(options => options.UseNpgsql(connectionString))  // Используем EF и строку подключения
+                .AddScoped<IScoreService, ScoreServiceEF>()  // Сервис для работы с баллами через EF
+                .AddScoped<ICommentService, CommentServiceEF>()  // Сервис для работы с комментариями через EF
+                .AddScoped<IRatingService, RatingServiceEF>()  // Сервис для работы с рейтингами через EF
+                .AddScoped<ConsoleUI>()  // Добавляем UI
+                .BuildServiceProvider();
 
-            // Создание экземпляра UI
-            var ui = new ConsoleUI(scoreService, commentService, ratingService);
+            // Получаем экземпляр ConsoleUI через DI
+            var ui = serviceProvider.GetService<ConsoleUI>();
 
             // Запуск игры через консольный интерфейс
             ui.Start();
