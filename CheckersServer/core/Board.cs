@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-
+using GameServer.Models;
 namespace CheckersGame
 {
     public class Board
@@ -12,7 +12,21 @@ namespace CheckersGame
             board = new Tile[8, 8];
             InitializeBoard();
         }
+        public bool ApplyMove(MoveRequest move)
+        {
+            var fromTile = board[move.FromRow, move.FromCol];
+            var toTile = board[move.ToRow, move.ToCol];
 
+            if (fromTile.Piece == null || toTile.Piece != null)
+            {
+                return false; // Невозможный ход
+            }
+
+            toTile.Piece = fromTile.Piece;
+            fromTile.Piece = null;
+
+            return true;
+        }
         private void InitializeBoard()
         {
             for (int row = 0; row < 8; row++)

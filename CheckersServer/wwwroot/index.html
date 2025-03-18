@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkers Game</title>
+    <style>
+        /* Стили для доски */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #282c34;
+            color: white;
+        }
+        h1 {
+            margin-top: 20px;
+        }
+        .menu {
+            list-style: none;
+            padding: 0;
+        }
+        .menu li {
+            margin: 15px;
+            padding: 10px;
+            border: 2px solid white;
+            display: inline-block;
+            cursor: pointer;
+            width: 200px;
+            font-size: 18px;
+            transition: background 0.3s;
+        }
+        .menu li:hover {
+            background: #4caf50;
+        }
+        .board {
+            display: none;
+            margin: 20px auto;
+            width: 400px;
+            height: 400px;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(8, 1fr);
+            border: 4px solid white;
+        }
+        .tile {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .black {
+            background-color: #8b4513;
+        }
+        .white {
+            background-color: #f0d9b5;
+        }
+        .piece {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .black-piece {
+            background-color: black;
+        }
+        .white-piece {
+            background-color: white;
+            border: 2px solid black;
+        }
+    </style>
+</head>
+<body>
+<h1>Checkers Game</h1>
+<ul class="menu">
+    <li onclick="startGame()">Play Game</li>
+    <li onclick="exitGame()">Exit</li>
+</ul>
+
+<div class="board" id="board"></div>
+<h2 id="response"></h2>
+<h3 id="current-player"></h3>
+
+<script>
+    const boardElement = document.getElementById('board');
+    const currentPlayerElement = document.getElementById('current-player');
+    let selectedPiece = null;
+    let currentPlayer = "white";  // Белые ходят первыми
+    let gameInProgress = false;
+
+    function startGame() {
+        gameInProgress = true;
+        boardElement.style.display = "grid";
+        boardElement.innerHTML = "";
+
+        for (let row = 0; row < 8; row++) {
+            for (let col = 0; col < 8; col++) {
+                const tile = document.createElement('div');
+                tile.classList.add('tile', (row + col) % 2 === 0 ? 'white' : 'black');
+                tile.dataset.row = row;
+                tile.dataset.col = col;
+
+                // Расставим фигуры: 3 верхних ряда - чёрные, 3 нижних - белые, только на "тёмных" клетках
+                if ((row < 3 || row > 4) && (row + col) % 2 !== 0) {
+                    const piece = document.createElement('div');
+                    piece.classList.add('piece', row < 3 ? 'black-piece' : 'white-piece');
+                    piece.dataset.row = row;
+                    piece.dataset.col = col;
+                    tile.appendChild(piece);
+                }
+
+                tile.addEventListener("click", () => movePiece(tile));
+                boardElement.appendChild(tile);
+            }
+        }
+        updateCurrentPlayer();
+        document.getElementById('response').innerText = "";
+    }
+    function hasAvailableMoves(player) {
+        for (let row = 0; row < 8; row++) {
+            for (let col = 0; col < 8; col++) {
+                const tile = document.querySelector(`.tile[data-row="${row}"][data-col="${col}"]`);
+                const piece = tile.firstChild;
+
+                // Проверяем, есть ли фигура игрока на текущей клетке
+                if (piece && piece.classList.contains(player === "white" ? "white-piece" : "black-piece")) {
+                    if (canCaptureAgain(piece)) {
+                        return true; // Если есть возможность захвата — возвращаем true
+                    }
+                }
+            }
+        }
+        return false; // Если нет доступных захватов
+    }
+
+    function movePiece(tile) {
+        if (!gameInProgress) return;  // Если игра не началась, нельзя ходить
+
+        const targetRow = parseInt(tile.dataset.row);
+        const targetCol = parseInt(tile.dataset.col);
+
+        if (selectedPiece) {
+            const fromRow = parseInt(selectedPiece.dataset.row);
+            const fromCol = parseInt(selectedPiece.dataset.col);
+
+            // Если целевая клетка занята не для захвата — ошибка
+            if (tile.firstChild && !isValidCapture(fromRow, fromCol, targetRow, targetCol)) {
+                document.getElementById('response').innerText = "This tile is already occupied!";
+                return;
+            }
+
+            // Проверяем ход или захват
+            if (!isValidMove(fromRow, fromCol, targetRow, targetCol)) {
+                document.getElementById('response').innerText = "Invalid move!";
+                return;
+            }
+
+            // Если захват
+            let wasCapture = false;
+            if (isValidCapture(fromRow, fromCol, targetRow, targetCol)) {
+                captureOpponent(fromRow, fromCol, targetRow, targetCol);
+                wasCapture = true;
+            }
+
+            // Перемещаем фигуру
+            tile.appendChild(selectedPiece);
+            selectedPiece.dataset.row = targetRow;
+            selectedPiece.dataset.col = targetCol;
+            document.getElementById('response').innerText = "";
+
+            // Если был захват
+            if (wasCapture) {
+                // Проверяем, можем ли сделать ещё один захват с текущей фигуры
+                if (canCaptureAgain(selectedPiece)) {
+                    document.getElementById('response').innerText = "You can capture again!";
+                } else {
+                    // Если захватов больше нет, переходим к следующему игроку
+                    selectedPiece = null;
+                    currentPlayer = (currentPlayer === "white") ? "black" : "white";
+                    updateCurrentPlayer();
+                }
+            } else {
+                // Если не было захвата, переключаем игрока
+                selectedPiece = null;
+                currentPlayer = (currentPlayer === "white") ? "black" : "white";
+                updateCurrentPlayer();
+            }
+        } else {
+            // Если ничего не выбрано, пытаемся выбрать фигуру своего цвета
+            if (!tile.firstChild) return;
+            const piece = tile.firstChild;
+            if (piece.classList.contains(currentPlayer === "white" ? "white-piece" : "black-piece")) {
+                selectedPiece = piece;
+                document.getElementById('response').innerText = "";
+            } else {
+                document.getElementById('response').innerText = "It's not your turn!";
+            }
+        }
+    }
+
+
+    function isValidMove(fromRow, fromCol, toRow, toCol) {
+        const rowDiff = Math.abs(toRow - fromRow);
+        const colDiff = Math.abs(toCol - fromCol);
+
+        // Проверяем, является ли ход взятием
+        const isCapture = isValidCapture(fromRow, fromCol, toRow, toCol);
+
+        // Если это обычный ход (не взятие), то запрещаем движение назад
+        if (!isCapture) {
+            if (currentPlayer === "white" && toRow > fromRow) return false;
+            if (currentPlayer === "black" && toRow < fromRow) return false;
+        }
+
+        // Обычный ход на 1 диагональ разрешен
+        if (rowDiff === 1 && colDiff === 1) {
+            return true;
+        }
+
+        // Или если это взятие, то оно разрешено
+        return isCapture;
+    }
+
+    function isValidCapture(fromRow, fromCol, toRow, toCol) {
+        const rowDiff = Math.abs(toRow - fromRow);
+        const colDiff = Math.abs(toCol - fromCol);
+
+        // Для захвата нужно перепрыгнуть ровно через одну клетку (2 шага по диагонали)
+        if (rowDiff !== 2 || colDiff !== 2) return false;
+
+        // Клетка, через которую «перепрыгиваем»
+        const midRow = (fromRow + toRow) / 2;
+        const midCol = (fromCol + toCol) / 2;
+
+        // Проверяем, не находится ли вражеская фигура на краю доски
+        if (midRow === 0 || midRow === 7 || midCol === 0 || midCol === 7) {
+            return false; // Фигура на краю, не можем её перепрыгнуть
+        }
+
+        const middleTile = document.querySelector(`.tile[data-row="${midRow}"][data-col="${midCol}"]`);
+        if (!middleTile) return false; // Проверка на существование клетки
+
+        const middlePiece = middleTile.firstChild;
+        // Должна быть шашка противоположного цвета
+        if (!middlePiece ||
+            middlePiece.classList.contains(currentPlayer === "white" ? "white-piece" : "black-piece")) {
+            return false;
+        }
+
+        // И конечная клетка (toRow, toCol) должна быть пустой
+        const targetTile = document.querySelector(`.tile[data-row="${toRow}"][data-col="${toCol}"]`);
+        if (targetTile.firstChild) {
+            return false;
+        }
+
+        return true;
+    }
+
+    function captureOpponent(fromRow, fromCol, toRow, toCol) {
+        const midRow = (fromRow + toRow) / 2;
+        const midCol = (fromCol + toCol) / 2;
+        const middleTile = document.querySelector(`.tile[data-row="${midRow}"][data-col="${midCol}"]`);
+        if (middleTile && middleTile.firstChild) {
+            middleTile.innerHTML = ""; // Удаляем «съеденную» фигуру
+        }
+    }
+
+    // Проверка, может ли текущая фигура ещё кого-то побить
+    // (Если найдём хоть один вариант захвата, значит можно бить дальше)
+    function canCaptureAgain(piece) {
+        const fromRow = parseInt(piece.dataset.row);
+        const fromCol = parseInt(piece.dataset.col);
+
+        // Возможные направления для хода (диагонали)
+        // Поскольку это простые шашки без дамок, «идём вперёд»,
+        // но при захвате в ряде правил можно ходить и назад.
+        // Если нужно строго вперёд, сделайте проверки, как в isValidMove.
+        // Если допускается назад при захвате, можно проверять все четыре диагонали.
+        const directions = [
+            [-2, -2], [-2, 2],
+            [2, -2], [2, 2]
+        ];
+
+        for (let [dr, dc] of directions) {
+            const newRow = fromRow + dr;
+            const newCol = fromCol + dc;
+            // Если isValidCapture = true, значит есть ход на взятие
+            if (isValidCapture(fromRow, fromCol, newRow, newCol)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function updateCurrentPlayer() {
+        currentPlayerElement.innerText = `Current Player: ${currentPlayer}`;
+    }
+
+    function exitGame() {
+        // window.close() часто не работает в браузерах,
+        // да и не очень красиво «убивать» вкладку нажатиями.
+        // Лучше просто обнулим доску.
+        gameInProgress = false;
+        boardElement.style.display = "none";
+        boardElement.innerHTML = "";
+        document.getElementById('response').innerText = "Game exited.";
+        currentPlayer = "white";
+        updateCurrentPlayer();
+    }
+</script>
+</body>
+</html>

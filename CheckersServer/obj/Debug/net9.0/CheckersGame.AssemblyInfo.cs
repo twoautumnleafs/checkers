@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CheckersGame")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+de1b3e8a0c56890bb68f768df89367855c8d430e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3c8933bb3e70c44170d6c2e4222304917cd1a6d7")]
 [assembly: System.Reflection.AssemblyProductAttribute("CheckersGame")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CheckersGame")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

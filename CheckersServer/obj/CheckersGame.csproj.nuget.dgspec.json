@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Dima\\RiderProjects\\c#\\CheckersGame.csproj": {}
+    "C:\\Users\\Dima\\RiderProjects\\CheckersServer\\CheckersGame.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Dima\\RiderProjects\\c#\\CheckersGame.csproj": {
+    "C:\\Users\\Dima\\RiderProjects\\CheckersServer\\CheckersGame.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Dima\\RiderProjects\\c#\\CheckersGame.csproj",
+        "projectUniqueName": "C:\\Users\\Dima\\RiderProjects\\CheckersServer\\CheckersGame.csproj",
         "projectName": "CheckersGame",
-        "projectPath": "C:\\Users\\Dima\\RiderProjects\\c#\\CheckersGame.csproj",
+        "projectPath": "C:\\Users\\Dima\\RiderProjects\\CheckersServer\\CheckersGame.csproj",
         "packagesPath": "C:\\Users\\Dima\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Dima\\RiderProjects\\c#\\obj\\",
+        "outputPath": "C:\\Users\\Dima\\RiderProjects\\CheckersServer\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -93,6 +93,10 @@
             "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
               "version": "[9.0.4, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[8.0.0, )"
             }
           },
           "imports": [

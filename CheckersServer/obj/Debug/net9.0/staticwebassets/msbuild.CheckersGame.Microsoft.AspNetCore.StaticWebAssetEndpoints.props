@@ -1,0 +1,16 @@
+﻿<Project>
+  <ItemGroup>
+    <StaticWebAssetEndpoint Include="_content/CheckersGame/index.html">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\index.html'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-rinZfOufkHDblT82ZFUO/u1meNZ0KenVDsSZ1q/rPzM="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"12946"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022rinZfOufkHDblT82ZFUO/u1meNZ0KenVDsSZ1q/rPzM=\u0022"},{"Name":"Last-Modified","Value":"Tue, 18 Mar 2025 22:12:49 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/CheckersGame/index.yohn5qx9cx.html">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\index.html'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"yohn5qx9cx"},{"Name":"integrity","Value":"sha256-rinZfOufkHDblT82ZFUO/u1meNZ0KenVDsSZ1q/rPzM="},{"Name":"label","Value":"_content/CheckersGame/index.html"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"12946"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022rinZfOufkHDblT82ZFUO/u1meNZ0KenVDsSZ1q/rPzM=\u0022"},{"Name":"Last-Modified","Value":"Tue, 18 Mar 2025 22:12:49 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+  </ItemGroup>
+</Project>
