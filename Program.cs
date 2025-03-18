@@ -11,7 +11,7 @@ namespace CheckersGame
         static void Main(string[] args)
         {
             // Строка подключения к базе данных PostgreSQL
-            string connectionString = "Host=localhost;Username=postgres;Password=xbox;Database=gamestudio";  // Убедитесь, что это ваша реальная строка подключения
+            string connectionString = "Server=localhost;User id=postgres;Password=xbox;Database=gamestudio";  // Убедитесь, что это ваша реальная строка подключения
 
             // Создание контейнера для зависимостей
             var serviceProvider = new ServiceCollection()

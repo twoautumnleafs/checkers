@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace CheckersGame
 {
     public class Board
@@ -48,5 +51,32 @@ namespace CheckersGame
         {
             board[row, col] = tile;
         }
+
+        // Метод для сериализации доски
+        public List<string> GetSerializedBoard()
+        {
+            var serializedBoard = new List<string>();
+
+            for (int row = 0; row < 8; row++)
+            {
+                var rowString = "";
+                for (int col = 0; col < 8; col++)
+                {
+                    var tile = board[row, col];
+                    if (tile.Piece != null)
+                    {
+                        rowString += tile.Piece.Color == PieceColor.White ? " w " : " b ";
+                    }
+                    else
+                    {
+                        rowString += " . "; // Пустая клетка
+                    }
+                }
+                serializedBoard.Add(rowString);
+            }
+
+            return serializedBoard;
+        }
+
     }
 }

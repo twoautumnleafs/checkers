@@ -1,9 +1,8 @@
-namespace CheckersGame
+namespace CheckersGame;
+
+public enum GameState
 {
-    public enum GameState
-    {
-        InProgress,
-        Win,
-        Draw
-    }
+    InProgress,
+    Win,
+    Draw
 }
